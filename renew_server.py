@@ -96,17 +96,17 @@ def click_console_button(page, selector: str, timeout_ms: int) -> str:
     has_disabled = btn.get_attribute("disabled") is not None
     is_enabled = btn.is_enabled()
     logger.info(
-        "控制台按钮状态: disabled属性=%s, is_enabled=%s",
+        "Start按钮状态: disabled属性=%s, is_enabled=%s",
         has_disabled,
         is_enabled,
     )
 
     if not has_disabled and is_enabled:
         btn.click()
-        logger.info("已点击控制台控制按钮")
+        logger.info("已点击Start按钮")
         action = "已点击"
     else:
-        logger.info("控制台按钮已禁用（disabled 属性），跳过")
+        logger.info("Start按钮已禁用（disabled 属性），跳过")
         action = "已禁用，跳过"
 
     return f"disabled={has_disabled}, is_enabled={is_enabled}, {action}"
