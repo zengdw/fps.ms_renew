@@ -38,6 +38,14 @@ def require_env(name: str) -> str:
         sys.exit(1)
     return value
 
+
+def env_or_default(name: str, default: str) -> str:
+    """未设置或为空（如 GitHub Secret 未配置）时使用默认值。"""
+    value = os.environ.get(name)
+    if value is None or not value.strip():
+        return default
+    return value.strip()
+
 def parse_cookie_header(header: str) -> list[dict]:
     cookies: list[dict] = []
     seen: set[str] = set()
@@ -169,10 +177,10 @@ def main() -> None:
     load_dotenv()
 
     cookie_header = require_env("COOKIE")
-    server_url = os.environ.get("SERVER_URL", DEFAULT_SERVER_URL).strip()
-    console_selector = os.environ.get(
+    server_url = env_or_default("SERVER_URL", DEFAULT_SERVER_URL)
+    console_selector = env_or_default(
         "CONSOLE_BTN_SELECTOR", DEFAULT_CONSOLE_BTN_SELECTOR
-    ).strip()
+    )
     headless = env_bool("HEADLESS", False)
     timeout_ms = int(os.environ.get("TIMEOUT_MS", "120000"))
 

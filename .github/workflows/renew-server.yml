@@ -34,6 +34,7 @@ jobs:
           COOKIE: ${{ secrets.COOKIE }}
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          # 未配置时为空字符串，renew_server.py 会回退到脚本内默认值
           SERVER_URL: ${{ secrets.SERVER_URL }}
           CONSOLE_BTN_SELECTOR: ${{ secrets.CONSOLE_BTN_SELECTOR }}
           HEADLESS: "true"
