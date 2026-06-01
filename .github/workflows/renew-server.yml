@@ -1,0 +1,49 @@
+name: Renew FPS Server
+
+on:
+  workflow_dispatch:
+
+  repository_dispatch:
+    types: [renew-server]
+
+concurrency:
+  group: renew-server
+  cancel-in-progress: false
+
+jobs:
+  renew:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+          cache-dependency-path: requirements.txt
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run renewal
+        env:
+          COOKIE: ${{ secrets.COOKIE }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          SERVER_URL: ${{ secrets.SERVER_URL }}
+          CONSOLE_BTN_SELECTOR: ${{ secrets.CONSOLE_BTN_SELECTOR }}
+          HEADLESS: "true"
+          TIMEOUT_MS: "120000"
+        run: python renew_server.py
+
+      - name: Upload screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: screenshots
+          path: artifacts/
+          if-no-files-found: ignore
