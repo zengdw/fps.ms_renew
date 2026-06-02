@@ -23,7 +23,9 @@ class ExecutionReport:
             lines.append(f"Start按钮: {self.console_status}")
         if self.turnstile_status:
             lines.append(f"Turnstile 验证: {self.turnstile_status}")
-        return "\n".join(lines) or "无状态信息"
+            
+        lines.append("\nfps.me Auto Renew")
+        return "\n".join(lines) 
 
 
 class TelegramNotifier:
